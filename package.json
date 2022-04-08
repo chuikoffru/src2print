@@ -1,0 +1,20 @@
+{
+  "name": "src2print",
+  "version": "1.0.0",
+  "description": "src2print is a simple tool for convert your source code to html.",
+  "main": "index.mjs",
+  "bin": "index.mjs",
+  "author": "Konstantin Chuykov <chuikoff.ru@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "keywords": [
+    "highlight",
+    "cli",
+    "code review",
+    "browser",
+    "html",
+    "sources",
+    "code2html",
+    "code2pdf"
+  ]
+}
