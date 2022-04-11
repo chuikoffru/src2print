@@ -79,7 +79,7 @@ const parseTree = async (route = CURRENT_DIR) => {
 
   // Записываем шапку документа
   writableFile.write(header.toString().replace("{LISTING_NAME}", path.basename(CURRENT_DIR)));
-  writableFile.write("<h1>Программа для ЭВМ</h1>");
+  writableFile.write("<header><h1>Программа для ЭВМ</h1></header>");
 
   // Парсим дерево исходников
   await parseTree();
