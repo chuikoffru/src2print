@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 
+import { cwd } from "process";
 import * as fsp from "fs/promises";
 import fs from "fs";
-import { cwd } from "process";
 import path from "path";
 import child_process from "child_process";
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
 const CURRENT_DIR = cwd();
 
-const ALLOWED_EXT = ["tsx", "ts", "js", "jsx", "py", "mjs"];
+const ALLOWED_EXT = ["tsx", "ts", "js", "jsx", "py", "mjs", "php"];
 
 const IGNORED_DIR = ["node_modules", ".git", "vendor", ".idea"];
 
@@ -37,6 +39,7 @@ const encodeHTML = (code) => {
 const parseTree = async (route = CURRENT_DIR) => {
   const tree = await getList(route);
 
+  // Убираем лишнее
   const filteredTree = tree
     .filter((file) => !IGNORED_DIR.includes(file.name))
     .filter((file) => isAllowed(file.name) || file.isDirectory());
@@ -53,7 +56,7 @@ const parseTree = async (route = CURRENT_DIR) => {
 
       // Вставляем номер строки кода
       const linesArray = lines.map(
-        (line, num) => `${(num + 1).toString().padStart(4, " ")}. ${encodeHTML(line)}`
+        (line, num) => `${(num + 1).toString().padStart(4, " ")}  ${encodeHTML(line)}`
       );
 
       const resultLines = linesArray.join("\n");
@@ -71,8 +74,9 @@ const parseTree = async (route = CURRENT_DIR) => {
 
 (async () => {
   // Получаем шаблоны
-  const header = await fsp.readFile(`${CURRENT_DIR}/header.html`);
-  const footer = await fsp.readFile(`${CURRENT_DIR}/footer.html`);
+  const header = await fsp.readFile(path.join(__dirname, `/header.html`));
+  const footer = await fsp.readFile(path.join(__dirname, `/footer.html`));
+
   // Записываем шапку документа
   writableFile.write(header.toString().replace("{LISTING_NAME}", path.basename(CURRENT_DIR)));
   writableFile.write("<h1>Программа для ЭВМ</h1>");
