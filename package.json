@@ -1,6 +1,6 @@
 {
   "name": "src2print",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "src2print is a simple tool for convert your source code to html.",
   "main": "index.mjs",
   "bin": {
