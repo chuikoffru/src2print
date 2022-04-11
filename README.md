@@ -4,6 +4,8 @@
 
 It can be useful if you need to licence you software.
 
+[![NPM](https://nodei.co/npm/src2print.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/src2print/)
+
 ## Requirements
 - Linux
 - NodeJS 17.5 ^
