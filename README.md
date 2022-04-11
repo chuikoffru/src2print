@@ -4,6 +4,11 @@
 
 It can be useful if you need to licence you software.
 
+## Requirements
+- Linux
+- NodeJS 17.5 ^
+
+
 ## Installation
 
     npm i src2print -g
