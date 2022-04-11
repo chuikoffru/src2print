@@ -6,11 +6,30 @@ import fs from "fs";
 import path from "path";
 import child_process from "child_process";
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const DIRNAME = path.dirname(new URL(import.meta.url).pathname);
+
+// Парсим аргументы
+const getArgs = () => {
+  const args = process.argv.slice(2);
+  let result = {};
+  for (let i = 0; i < args.length; i++) {
+    if (args[i].startsWith("-") && args[i + 1].startsWith("-")) {
+      result[args[i]] = null;
+    }
+
+    if (args[i].startsWith("-") && !args[i + 1].startsWith("-")) {
+      result[args[i]] = args[i + 1];
+    }
+  }
+
+  return result;
+};
+
+const args = getArgs();
 
 const CURRENT_DIR = cwd();
 
-const ALLOWED_EXT = ["tsx", "ts", "js", "jsx", "py", "mjs", "php"];
+const ALLOWED_EXT = args["-e"]?.split(",") || ["tsx", "ts", "js", "jsx", "py", "mjs", "php"];
 
 const IGNORED_DIR = ["node_modules", ".git", "vendor", ".idea"];
 
@@ -74,12 +93,15 @@ const parseTree = async (route = CURRENT_DIR) => {
 
 (async () => {
   // Получаем шаблоны
-  const header = await fsp.readFile(path.join(__dirname, `/header.html`));
-  const footer = await fsp.readFile(path.join(__dirname, `/footer.html`));
+  const header = await fsp.readFile(path.join(DIRNAME, `/header.html`));
+  const footer = await fsp.readFile(path.join(DIRNAME, `/footer.html`));
+
+  const folder_name = path.basename(CURRENT_DIR);
+  const project_name = args["-t"] || folder_name;
 
   // Записываем шапку документа
-  writableFile.write(header.toString().replace("{LISTING_NAME}", path.basename(CURRENT_DIR)));
-  writableFile.write("<header><h1>Программа для ЭВМ</h1></header>");
+  writableFile.write(header.toString().replace("{LISTING_NAME}", project_name));
+  writableFile.write(`<header><h1>${project_name}</h1></header>`);
 
   // Парсим дерево исходников
   await parseTree();
